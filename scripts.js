@@ -1,10 +1,11 @@
 // Test external link
 console.log("A Library Project? Here?! Are you mad?!");
 
-// grab objects for manipulation later
+// Get Table element and button element for use in functions
 let libraryTable = document.querySelector("table");
+const newBookButton = document.getElementById("book-btn");
 
-
+// Set up Array for storing book objects, constructor function for book objects
 const myLibrary = [];
 
 function Book(title, author, pages, read, score) {
@@ -13,9 +14,6 @@ function Book(title, author, pages, read, score) {
     this.pages = pages;
     this.read = read;
     this.score = score;
-    this.info = function () {
-        return `${this.title} by ${this.author}, ${this.pages}, ${this.read}`
-    }
 };
 
 function addBookToLibrary() {
@@ -24,7 +22,7 @@ function addBookToLibrary() {
     let author = prompt("Who is the author of this book?");
     let pages = prompt("How many pages does this book have?");
     let read = prompt("Have you read this book?");
-    let score = prompt("If you've read this book, please rate it out of 10. If you haven't read the book or don't feel like adding a score, type 'N/A'")
+    let score = prompt("If you've read this book, please rate it out of 10. If you haven't read the book or don't feel like adding a score, type 'N/A'");
     let newBook = new Book(title, author, pages, read, score);
     myLibrary.push(newBook);
     displayLibrary(newBook);
