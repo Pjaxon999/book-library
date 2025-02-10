@@ -20,7 +20,7 @@ function addBookToLibrary() {
     let pages = prompt("How many pages does this book have?");
     let read = prompt("Is this a book you have read or not read?");
     let newBook = new Book(title, author, pages, read);
-    myLibrary.push(newBook.info());
+    myLibrary.push(newBook);
     console.log(myLibrary);
 };
 
