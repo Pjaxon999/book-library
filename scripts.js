@@ -2,13 +2,11 @@
 console.log("A Library Project? Here?! Are you mad?!");
 
 // Grab elements for use in functions
-let libraryTable = document.querySelector("table");
+let libraryTable = document.querySelector("table tbody");
 const newBookButton = document.getElementById("new-book-btn");
 const addBookDialog = document.getElementById("book-dialog");
 const cancelButton = document.getElementById("cancel-btn");
 const confirmButton = document.getElementById("confirm-btn");
-// Prevent default submit behavior
-
 
 // Open dialog window
 newBookButton.addEventListener("click", () => {
@@ -20,26 +18,25 @@ cancelButton.addEventListener("click", () => {
     addBookDialog.close();
 });
 
-
+/* Prevent default confirm behavior, capture form data, create a new book object, add the new
+book to myLibrary, and close the dialog element */
+confirmButton.addEventListener("click", function(event){
+    event.preventDefault();
+    const title = document.getElementById("title").value;
+    const author = document.getElementById("author").value;
+    const pages = document.getElementById("pages").value;
+    const read = document.getElementById("read").value;
+    const score = document.getElementById("score").value;
+    const newBook = new Book(title, author, pages, read, score);
+    myLibrary.push(newBook);
+    displayLibrary();
+    document.getElementById("book-form").reset();
+    addBookDialog.close();
+});
 
 
 // Set up Array for storing book objects, constructor function for book objects
-const myLibrary = [
-    {
-        title: "Ulysses",
-        author: "James Joyce",
-        pages: "732",
-        read: "no",
-        score:"n/a"
-    },
-    {
-        title: "In Search of Lost Time",
-        author: "Marcel Proust",
-        pages: "4215",
-        read: "yes",
-        score: "10"
-    }
-];
+const myLibrary = [];
 
 function Book(title, author, pages, read, score) {
     this.title = title;
@@ -50,16 +47,13 @@ function Book(title, author, pages, read, score) {
 };
 
 // take params, create a book then store it in the array
-function addBookToLibrary() {
-    let newBook = new Book(title, author, pages, read, score);
-    myLibrary.push(newBook);
-    displayLibrary();
-};
+
 
 // Add a new row, populate cells with info from newly added book
 function displayLibrary() {
+    libraryTable.textContent = '';
     myLibrary.forEach((book) => {
-            let newBookRow = libraryTable.insertRow(1);
+            let newBookRow = libraryTable.insertRow();
             let titleCell = newBookRow.insertCell(0);
             let authorCell = newBookRow.insertCell(1);
             let pagesCell = newBookRow.insertCell(2);

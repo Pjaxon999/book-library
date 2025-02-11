@@ -28,7 +28,7 @@
 <button id="new-book-btn">Add Book to your Library</button>
 <dialog id="book-dialog" closed>
     <p>Okay, let's add a new book!</p>
-    <form method="dialog">
+    <form id="book-form" method="dialog">
     <div class="form-section">
         <label for="title">What is the Title of this Book?</label>
         <input type="text" name="title" id="title" autofocus required/>
@@ -47,7 +47,7 @@
     </div>
     <div class="form-section">
         <label for="score">How would you rate it out of 10?</label>
-        <input type="text" name="score" id="read" required/>
+        <input type="text" name="score" id="score" required/>
     </div>
     </form>
     <div class="form-section">
