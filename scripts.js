@@ -1,12 +1,10 @@
-// Test external link
-console.log("A Library Project? Here?! Are you mad?!");
-
-// Grab elements for use in functions
-let libraryTable = document.querySelector("table tbody");
+const myLibrary = [];
+const libraryTable = document.querySelector("table tbody");
 const newBookButton = document.getElementById("new-book-btn");
 const addBookDialog = document.getElementById("book-dialog");
 const cancelButton = document.getElementById("cancel-btn");
 const confirmButton = document.getElementById("confirm-btn");
+
 
 // Open dialog window
 newBookButton.addEventListener("click", () => {
@@ -21,6 +19,15 @@ cancelButton.addEventListener("click", () => {
 /* Prevent default confirm behavior, capture form data, create a new book object, add the new
 book to myLibrary, and close the dialog element */
 confirmButton.addEventListener("click", function(event){
+    const bookForm = document.getElementById("book-form");
+    const readInput = document.getElementById("read");
+    const readValue = readInput.value.trim().toLowerCase();
+    if (readValue !== "yes" && readValue !== "no") {
+        readInput.setCustomValidity("Please enter 'yes' or 'no'.");
+    } else {
+        readInput.setCustomValidity("");
+    }
+    if (bookForm.checkValidity()) {
     event.preventDefault();
     const title = document.getElementById("title").value;
     const author = document.getElementById("author").value;
@@ -33,11 +40,10 @@ confirmButton.addEventListener("click", function(event){
     displayLibrary(newBookIndex);
     document.getElementById("book-form").reset();
     addBookDialog.close();
+    } else {
+        bookForm.reportValidity();
+    }
 });
-
-
-// Set up Array for storing book objects, constructor function for book objects
-const myLibrary = [];
 
 function Book(title, author, pages, read, score) {
     this.title = title;
@@ -45,20 +51,27 @@ function Book(title, author, pages, read, score) {
     this.pages = pages;
     this.read = read;
     this.score = score;
+    this.readStatus = function () {
+        if (this.read.trim().toLowerCase() === "yes"){
+            this.read = "No";
+        } else {
+            this.read = "Yes";
+        }
+    };
 };
 
-// Add a new row, populate cells with info from newly added book
 function displayLibrary() {
     libraryTable.textContent = '';
     myLibrary.forEach((book, index) => {
-            let newBookRow = libraryTable.insertRow();
+            const newBookRow = libraryTable.insertRow();
             newBookRow.setAttribute('data-index', index)
-            let titleCell = newBookRow.insertCell(0);
-            let authorCell = newBookRow.insertCell(1);
-            let pagesCell = newBookRow.insertCell(2);
-            let readCell = newBookRow.insertCell(3);
-            let scoreCell = newBookRow.insertCell(4);
-            let deleteCell = newBookRow.insertCell(5);
+            const titleCell = newBookRow.insertCell(0);
+            const authorCell = newBookRow.insertCell(1);
+            const pagesCell = newBookRow.insertCell(2);
+            const readCell = newBookRow.insertCell(3);
+            const scoreCell = newBookRow.insertCell(4);
+            const deleteCell = newBookRow.insertCell(5);
+            const readStatusCell = newBookRow.insertCell(6);
             titleCell.textContent = book.title;
             authorCell.textContent = book.author;
             pagesCell.textContent = book.pages;
@@ -66,19 +79,33 @@ function displayLibrary() {
             scoreCell.textContent = book.score;
             const createDeleteButton = document.createElement("button");
             createDeleteButton.textContent = "X";
-            createDeleteButton.setAttribute("class", "delete-button");
+            createDeleteButton.setAttribute("class", "delete-button")
             createDeleteButton.addEventListener("click", removeBook);
             deleteCell.appendChild(createDeleteButton);
-
+            const createReadButton = document.createElement("button");
+            createReadButton.textContent = "Change Read Status";
+            createReadButton.setAttribute("id", "read-btn");
+            createReadButton.addEventListener("click", readStatusUpdate);
+            readStatusCell.appendChild(createReadButton);
     });
 };
 
-// Function that removes a book from the library and from the display (use splice to remove from array, using data-attribute as the index value. Use )
 function removeBook(event) {
-    let target = event.target;
-    let parent = target.parentElement;
-    let row = parent.parentElement;
-    let index = row.getAttribute("data-index");
+    const target = event.target;
+    const parent = target.parentElement;
+    const row = parent.parentElement;
+    const index = Number(row.getAttribute("data-index"));
     myLibrary.splice(index, 1);
     row.remove();
+}
+
+function readStatusUpdate(event) {
+    const target = event.target;
+    const parent = target.parentElement;
+    const row = parent.parentElement;
+    const index = Number(row.getAttribute("data-index"))
+    const book = myLibrary[index];
+    book.readStatus();
+    const readCell = row.cells[3];
+    readCell.textContent = book.read;
 }
