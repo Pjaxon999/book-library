@@ -28,8 +28,9 @@ confirmButton.addEventListener("click", function(event){
     const read = document.getElementById("read").value;
     const score = document.getElementById("score").value;
     const newBook = new Book(title, author, pages, read, score);
-    myLibrary.push(newBook);
-    displayLibrary();
+    const newArrayLength = myLibrary.push(newBook);
+    const newBookIndex = newArrayLength - 1;
+    displayLibrary(newBookIndex);
     document.getElementById("book-form").reset();
     addBookDialog.close();
 });
@@ -46,23 +47,26 @@ function Book(title, author, pages, read, score) {
     this.score = score;
 };
 
-// take params, create a book then store it in the array
-
-
 // Add a new row, populate cells with info from newly added book
 function displayLibrary() {
     libraryTable.textContent = '';
-    myLibrary.forEach((book) => {
+    myLibrary.forEach((book, index) => {
             let newBookRow = libraryTable.insertRow();
+            newBookRow.setAttribute('data-index', index)
             let titleCell = newBookRow.insertCell(0);
             let authorCell = newBookRow.insertCell(1);
             let pagesCell = newBookRow.insertCell(2);
             let readCell = newBookRow.insertCell(3);
             let scoreCell = newBookRow.insertCell(4);
+            let deleteCell = newBookRow.insertCell(5);
             titleCell.textContent = book.title;
             authorCell.textContent = book.author;
             pagesCell.textContent = book.pages;
             readCell.textContent = book.read;
             scoreCell.textContent = book.score;
+            const createDeleteButton = document.createElement("button");
+            createDeleteButton.textContent = "X";
+            createDeleteButton.setAttribute("class", "delete-button");
+            deleteCell.appendChild(createDeleteButton);
     });
 };
