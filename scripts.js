@@ -67,6 +67,18 @@ function displayLibrary() {
             const createDeleteButton = document.createElement("button");
             createDeleteButton.textContent = "X";
             createDeleteButton.setAttribute("class", "delete-button");
+            createDeleteButton.addEventListener("click", removeBook);
             deleteCell.appendChild(createDeleteButton);
+
     });
 };
+
+// Function that removes a book from the library and from the display (use splice to remove from array, using data-attribute as the index value. Use )
+function removeBook(event) {
+    let target = event.target;
+    let parent = target.parentElement;
+    let row = parent.parentElement;
+    let index = row.getAttribute("data-index");
+    myLibrary.splice(index, 1);
+    row.remove();
+}
