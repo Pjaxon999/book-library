@@ -45,19 +45,21 @@ confirmButton.addEventListener("click", function(event){
     }
 });
 
-function Book(title, author, pages, read, score) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-    this.score = score;
-    this.readStatus = function () {
-        if (this.read.trim().toLowerCase() === "yes"){
-            this.read = "No";
-        } else {
-            this.read = "Yes";
-        }
-    };
+class Book {
+    constructor(title, author, pages, read, score) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+        this.score = score;
+        this.readStatus = function () {
+            if (this.read.trim().toLowerCase() === "yes") {
+                this.read = "No";
+            } else {
+                this.read = "Yes";
+            }
+        };
+    }
 };
 
 function displayLibrary() {
